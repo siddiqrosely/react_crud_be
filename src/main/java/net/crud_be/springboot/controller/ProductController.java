@@ -31,10 +31,6 @@ public class ProductController {
 		return productRepository.findAll();
 	}
 		
-//	@GetMapping("/product/{id}")
-//	public Product getProductById(@PathVariable Long id){	
-//		return productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("not found"));		
-//	}
 
 	@GetMapping("/product/{productCode}")
 	public Product getProductByProductCode(@PathVariable String productCode) {
@@ -51,57 +47,32 @@ public class ProductController {
 		return productRepository.save(product);
 	}
 	
-//	@PutMapping("/product/{id}")
-//	public Product updateProduct(@RequestBody Product newProduct, @PathVariable Long id) {
-//		return productRepository.findById(id)
-//				.map(product ->{
-//					product.setProductCode(newProduct.getProductCode());					
-//					product.setProductName(newProduct.getProductName());					
-//					product.setProductCategory(newProduct.getProductCategory());					
-//					product.setProductBrand(newProduct.getProductBrand());
-//					product.setProductType(newProduct.getProductType());
-//					product.setProductDesc(newProduct.getProductDesc());
-//					return productRepository.save(product);
-//				}).orElseThrow(()-> new ResourceNotFoundException("Id not found"));
-//	}
-	
 	@PutMapping("/product/{productCode}")
 	public Product updateProductByProductCode(@RequestBody Product newProduct, @PathVariable String productCode) {
 
-		Product existingProduct = productRepository.findByProductCode(productCode);
-	    if (existingProduct == null) {
+		Product currentProduct = productRepository.findByProductCode(productCode);
+	    if (currentProduct == null) {
 	        throw new ResourceNotFoundException("Product with productCode " + productCode + " not found");
 	    }
 	    
-	    existingProduct.setProductCode(newProduct.getProductCode());
-	    existingProduct.setProductName(newProduct.getProductName());
-	    existingProduct.setProductCategory(newProduct.getProductCategory());
-	    existingProduct.setProductBrand(newProduct.getProductBrand());
-	    existingProduct.setProductType(newProduct.getProductType());
-	    existingProduct.setProductDesc(newProduct.getProductDesc());
+	    currentProduct.setProductCode(newProduct.getProductCode());
+	    currentProduct.setProductName(newProduct.getProductName());
+	    currentProduct.setProductCategory(newProduct.getProductCategory());
+	    currentProduct.setProductBrand(newProduct.getProductBrand());
+	    currentProduct.setProductType(newProduct.getProductType());
+	    currentProduct.setProductDesc(newProduct.getProductDesc());
 
-	    return productRepository.save(existingProduct);
+	    return productRepository.save(currentProduct);
 	}
-
-	
-//	@DeleteMapping("/product/{id}")
-//	public String deleteEmployee(@PathVariable Long id) {
-//		if(!productRepository.existsById(id)) {
-//			throw new ResourceNotFoundException("Id not found");
-//		}		
-//		productRepository.deleteById(id);
-//		return "Product with id "+id+" has been removed.";		
-//	}	
-	
 	
 	@DeleteMapping("/product/{productCode}")
 	public String deleteProductByProductCode(@PathVariable String productCode) {
-	    Product existingProduct = productRepository.findByProductCode(productCode);
-	    if (existingProduct == null) {
+	    Product currentProduct = productRepository.findByProductCode(productCode);
+	    if (currentProduct == null) {
 	        throw new ResourceNotFoundException("Product with productCode " + productCode + " not found");
 	    }
 	    
-	    productRepository.delete(existingProduct);
+	    productRepository.delete(currentProduct);
 	    return "Product with productCode " + productCode + " has been removed.";
 	}
 
